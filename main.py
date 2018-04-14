@@ -15,12 +15,13 @@ class Blog(db.Model):
     blog_text = db.Column(db.String(600))
     deleted = db.Column(db.Boolean)
 
-    def __init__(self, name):
-        self.name = name
+    def __init__(self, blog_title, blog_text):
+        self.blog_title = blog_title
+        self.blog_text = blog_text
         self.deleted = False
 
-    def __repr__(self):
-        return '<Blog %r>' % self.name
+    #def __repr__(self):
+     #   return '<Blog %r>' % self.blog_title
 
 def get_bloglist():
     return Blog.query.filter_by(deleted=False).all()
@@ -28,7 +29,7 @@ def get_bloglist():
 def get_deleted():
     return Blog.query.filter_by(deleted=True).all()
 
-# Create a new route called rate_movie which handles a POST request on /rating-confirmation
+
 @app.route("/blog_text_page", methods=['POST'])
 def add_blog_text():
     blog_id = request.form['blog_id']
@@ -46,15 +47,18 @@ def new_blog_text():
 
 @app.route("/add", methods=['POST'])
 def add_blog():
-    # look inside the request to figure out what the user typed
     new_blog_title = request.form['new-blog']
+    new_blog_text = request.form['blog-text']
 
     # if the user typed nothing at all, redirect and tell them the error
     if (not new_blog_title) or (new_blog_title.strip() == ""):
         error = "Please enter a title for your blog."
         return redirect("/?error=" + error)
+    elif (not new_blog_text) or (new_blog_text.strip() == ""):
+        error = "Please enter some text for your blog."
+        return redirect("/?error=" + error)
 
-    blog = Blog(new_blog_title)
+    blog = Blog(new_blog_title,new_blog_text)
     db.session.add(blog)
     db.session.commit()
     return render_template('add-confirmation.html', blog=blog)
@@ -62,7 +66,7 @@ def add_blog():
 @app.route("/")
 def index():
     encoded_error = request.args.get("error")
-    return render_template('edit.html', watchlist=get_bloglist(), error=encoded_error and cgi.escape(encoded_error, quote=True))
+    return render_template('edit.html', bloglist=get_bloglist(), error=encoded_error and cgi.escape(encoded_error, quote=True))
 
 if __name__ == "__main__":
     app.run()
