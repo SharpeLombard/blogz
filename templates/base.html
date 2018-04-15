@@ -11,8 +11,11 @@
     <body>
         <h2>
             <a href="/">Go to Roadtripping Blog Main Page</a>
+            <a href="/add">Add A New Blog Entry</a>
         </h2>
-
+       <!--{% if error %}
+        <p class='error'>{{ error }}</p>
+      {% endif %}-->
         {% block content %}
         {% endblock %}
 

@@ -11,13 +11,13 @@ db = SQLAlchemy(app)
 
 class Blog(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    blog_title = db.Column(db.String(100))
-    blog_text = db.Column(db.String(600))
+    title = db.Column(db.String(100))
+    body = db.Column(db.String(600))
     deleted = db.Column(db.Boolean)
 
-    def __init__(self, blog_title, blog_text):
-        self.blog_title = blog_title
-        self.blog_text = blog_text
+    def __init__(self, title, body):
+        self.title = title
+        self.body = body
         self.deleted = False
 
     #def __repr__(self):
@@ -26,47 +26,63 @@ class Blog(db.Model):
 def get_bloglist():
     return Blog.query.filter_by(deleted=False).all()
 
-def get_deleted():
-    return Blog.query.filter_by(deleted=True).all()
+#def get_deleted():
+    #return Blog.query.filter_by(deleted=True).all()
 
 
-@app.route("/blog_text_page", methods=['POST'])
+@app.route("/newposst", methods=['POST'])
 def add_blog_text():
-    blog_id = request.form['blog_id']
-    blog_text = request.form['blog_text']
+    
+    #blog-text = request.form['blog-text']
+    #new-blog = request.form['new-blog']
 
-    blog.blog_text = blog_text
+    blog.title = new-blog
+    blog.body = blog-text
     db.session.add(blog)
     db.session.commit()
-    return render_template('blog-conf-page.html', blog=blog, blog_text=blog_text)
+    return render_template('new-post.html', blog=blog, blog_text=blog_text)
 
-# Creates a new route called movie_ratings which handles a GET on /ratings
-@app.route("/new_blog_text", methods=['GET'])
+#/add is where we go after hitting Add New
+@app.route("/add", methods=['GET'])
 def new_blog_text():
-    return render_template('blog_text.html', blogs = get_deleted())
+    encoded_error = request.args.get("error1")
+    next_error = request.args.get("error2")
+    return render_template('Add-New_Blog.html', error1=encoded_error and cgi.escape(encoded_error, quote=True),
+    error2=next_error and cgi.escape(next_error, quote=True))
 
-@app.route("/add", methods=['POST'])
+#/Newpost is where we go after hitting 'Add It'
+@app.route("/newpost", methods=['POST'])
 def add_blog():
     new_blog_title = request.form['new-blog']
     new_blog_text = request.form['blog-text']
 
     # if the user typed nothing at all, redirect and tell them the error
+    
+    if ((not new_blog_title) or (new_blog_title.strip() == "")) and ((not new_blog_text) or (new_blog_text.strip() == "")):
+        error1 = "Please enter blog title."
+        error2 = "Please enter blog text."
+        return redirect("/add?error1=" + error1,error2)
+    
     if (not new_blog_title) or (new_blog_title.strip() == ""):
-        error = "Please enter a title for your blog."
-        return redirect("/?error=" + error)
-    elif (not new_blog_text) or (new_blog_text.strip() == ""):
-        error = "Please enter some text for your blog."
-        return redirect("/?error=" + error)
+        error1 = "Please enter blog title."
+        return redirect("/add?error1=" + error1)
+
+        #return redirect("/?error=" + error)
+    if (not new_blog_text) or (new_blog_text.strip() == ""):
+        error2 = "Please enter blog text."
+        return redirect("/add?error2=" + error2)
+
+   
 
     blog = Blog(new_blog_title,new_blog_text)
     db.session.add(blog)
     db.session.commit()
-    return render_template('add-confirmation.html', blog=blog)
+    return render_template('new-post.html', blog=blog)
 
 @app.route("/")
 def index():
     encoded_error = request.args.get("error")
-    return render_template('edit.html', bloglist=get_bloglist(), error=encoded_error and cgi.escape(encoded_error, quote=True))
+    return render_template('blog.html', bloglist=get_bloglist(), error=encoded_error and cgi.escape(encoded_error, quote=True))
 
 if __name__ == "__main__":
     app.run()
