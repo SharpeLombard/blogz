@@ -6,7 +6,7 @@
   <ul>
     {% for blog in bloglist: %}
       <li>
-          <p><a href='/blog'>
+          <p><a href='/blog?id={{blog.id}}'>
             <!--<form method="POST" action='/blog'>-->
             {{ blog.title }}</p></a>
           <p>{{blog.body}}</p>
