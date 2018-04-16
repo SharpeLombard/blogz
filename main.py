@@ -36,11 +36,11 @@ def new_blog_text():
 #/Newpost is where we go after hitting 'Add It'
 @app.route("/newpost", methods=['POST','GET'])
 def add_blog():
-    if request.method == 'POST':
-        new_blog = request.form['new_blog']
-        blog_text = request.form['blog_text']
-        title_error = ''
-        body_error = ''    
+   # if request.method == 'POST':
+    new_blog = request.form['new_blog']
+    blog_text = request.form['blog_text']
+    title_error = ''
+    body_error = ''    
 
     #if len(new_blog_text)==0 and len(new_blog_title)==0:
      #   title-error = "Please enter blog title."
@@ -73,20 +73,20 @@ def viewblog():
     blog_id = request.args.get('id')
     if blog_id == None:
         blogs = Blog.query.all()
-        return render_template('blog.html',blogs=blogs, title='Build-A-Blog')
+        return render_template('alt-blog.html',blogs=blogs, title='Build-A-Blog')
     else:
         blog = Blog.query.get(blog_id)
         return render_template('new-post.html',blog=blog, title='Blog Entry')
     
-    body = blog.body
-    title = blog.title
+   # body = blog.body
+    #title = blog.title
     return render_template('new-post.html', title=blog_title, body=blog.body)
 
 @app.route("/")
 def index():
-    encoded_error = request.args.get("error")
-    return render_template('blog.html', bloglist=get_bloglist(), error=encoded_error and cgi.escape(encoded_error, quote=True))
-    #return redirect('/blog')
+    #encoded_error = request.args.get("error")
+    #return render_template('blog.html', bloglist=get_bloglist(), error=encoded_error and cgi.escape(encoded_error, quote=True))
+    return redirect('/blog')
 
 if __name__ == "__main__":
     app.run()

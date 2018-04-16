@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+{% block content %}
+
+<h1>My Awesome Blog Posts</h1>
+{% if blogs|length == 0 %}
+  <h3> No blog posts yet.</h3>
+  {%else%}
+
+    {% for blog in blogs: %}
+      
+    <a href='/blog?id={{blog.id}}'>
+        <h2>{{ blog.title }}</h2></a>
+          <p>{{blog.body}}</p>
+          <hr>
+            <input type="hidden" name="title" value="{{ blog.id }}"/>
+        
+        
+    {% endfor %}
+
+{% endif %}
+
+{% endblock %}
