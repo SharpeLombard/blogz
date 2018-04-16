@@ -3,7 +3,7 @@ from flask_sqlalchemy import SQLAlchemy
 import cgi
 
 app = Flask(__name__)
-app.config['DEBUG'] = True      # displays runtime errors in the browser, too
+app.config['DEBUG'] = True     
 app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+pymysql://build-a-blog:buildablog@localhost:8889/build-a-blog'
 app.config['SQLALCHEMY_ECHO'] = True
 
@@ -26,58 +26,46 @@ class Blog(db.Model):
 def get_bloglist():
     return Blog.query.filter_by(deleted=False).all()
 
-#def get_deleted():
-    #return Blog.query.filter_by(deleted=True).all()
-
-
-@app.route("/newposst", methods=['POST'])
-def add_blog_text():
-    
-    #blog-text = request.form['blog-text']
-    #new-blog = request.form['new-blog']
-
-    blog.title = new-blog
-    blog.body = blog-text
-    db.session.add(blog)
-    db.session.commit()
-    return render_template('new-post.html', blog=blog, blog_text=blog_text)
-
 #/add is where we go after hitting Add New
 @app.route("/add", methods=['GET'])
 def new_blog_text():
-    encoded_error = request.args.get("error1")
-    next_error = request.args.get("error2")
-    return render_template('Add-New_Blog.html', error1=encoded_error and cgi.escape(encoded_error, quote=True),
-    error2=next_error and cgi.escape(next_error, quote=True))
+   # encoded_error = request.args.get("error1")
+    #next_error = request.args.get("error2")
+    return render_template('Add-New_Blog.html')
 
 #/Newpost is where we go after hitting 'Add It'
-@app.route("/newpost", methods=['POST'])
+@app.route("/blog", methods=['POST'])
 def add_blog():
-    new_blog_title = request.form['new-blog']
-    new_blog_text = request.form['blog-text']
+    new_blog = request.form['new_blog']
+    blog_text = request.form['blog-text']
+    #blog_id = int(request.form['blog.id'])
+    title_error = ''
+    body_error = ''    
 
-    # if the user typed nothing at all, redirect and tell them the error
-    
-    if ((not new_blog_title) or (new_blog_title.strip() == "")) and ((not new_blog_text) or (new_blog_text.strip() == "")):
-        error1 = "Please enter blog title."
-        error2 = "Please enter blog text."
-        return redirect("/add?error1=" + error1,error2)
-    
-    if (not new_blog_title) or (new_blog_title.strip() == ""):
-        error1 = "Please enter blog title."
-        return redirect("/add?error1=" + error1)
+    #if len(new_blog_text)==0 and len(new_blog_title)==0:
+     #   title-error = "Please enter blog title."
+      #  body-error = "Please enter blog text." 
 
-        #return redirect("/?error=" + error)
-    if (not new_blog_text) or (new_blog_text.strip() == ""):
-        error2 = "Please enter blog text."
-        return redirect("/add?error2=" + error2)
+    if len(blog_text)==0:
+        body_error = "Please enter blog text."
+        #blog_text = blog_text
+        #new_blog = new_blog
 
-   
+    if len(new_blog)==0:
+        title_error = "Please enter blog title."
+        #blog_text = blog_text
+        #new_blog = new_blog
 
-    blog = Blog(new_blog_title,new_blog_text)
-    db.session.add(blog)
-    db.session.commit()
-    return render_template('new-post.html', blog=blog)
+    if not title_error and not body_error:
+        blog = Blog(new_blog,blog_text)
+        db.session.add(blog)
+        db.session.commit()
+        return render_template('new-post.html', blog=blog)
+    else:
+        new_blog = request.form['new_blog']
+        blog_text = request.form['blog-text']
+        return render_template('Add-New_Blog.html',blog_text=blog_text, new_blog=new_blog,
+        body_error=body_error,title_error=title_error)
 
 @app.route("/")
 def index():
