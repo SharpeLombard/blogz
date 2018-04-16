@@ -3,7 +3,7 @@
 
 <h2>Add A New Blog</h2>
 
-<form action="/blog" method="POST">
+<form action="/newpost" method="POST">
     <label>
         Title of my New Blog:
         <input type="text" name="new_blog"/>
@@ -11,7 +11,7 @@
         <span class="error">{{title_error}}</span>
         <p></p>
         Enter Blog Text Here:
-        <input type="text" name="blog-text"/>
+        <input type="text" name="blog_text"/>
         <p></p>
         <span class="error">{{body_error}}</span>
         </label>

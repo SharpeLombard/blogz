@@ -34,10 +34,10 @@ def new_blog_text():
     return render_template('Add-New_Blog.html')
 
 #/Newpost is where we go after hitting 'Add It'
-@app.route("/blog", methods=['POST'])
+@app.route("/newpost", methods=['POST'])
 def add_blog():
     new_blog = request.form['new_blog']
-    blog_text = request.form['blog-text']
+    blog_text = request.form['blog_text']
     #blog_id = int(request.form['blog.id'])
     title_error = ''
     body_error = ''    
@@ -48,13 +48,13 @@ def add_blog():
 
     if len(blog_text)==0:
         body_error = "Please enter blog text."
-        #blog_text = blog_text
-        #new_blog = new_blog
+        blog_text = blog_text
+        new_blog = new_blog
 
     if len(new_blog)==0:
         title_error = "Please enter blog title."
-        #blog_text = blog_text
-        #new_blog = new_blog
+        blog_text = blog_text
+        new_blog = new_blog
 
     if not title_error and not body_error:
         blog = Blog(new_blog,blog_text)
@@ -63,9 +63,18 @@ def add_blog():
         return render_template('new-post.html', blog=blog)
     else:
         new_blog = request.form['new_blog']
-        blog_text = request.form['blog-text']
+        blog_text = request.form['blog_text']
         return render_template('Add-New_Blog.html',blog_text=blog_text, new_blog=new_blog,
         body_error=body_error,title_error=title_error)
+
+@app.route("/blog", methods=['POST','GET'])
+def viewblog():
+    blog_id = int(request.form['blog.id'])
+    blog = Blog.query.get(blog_id)
+    blogs = Blog.query.all()
+    body = blog.body
+    title = blog.title
+    return render_template('new-post.html', title=blog_title, body=blog.body)
 
 @app.route("/")
 def index():

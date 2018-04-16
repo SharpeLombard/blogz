@@ -6,10 +6,12 @@
   <ul>
     {% for blog in bloglist: %}
       <li>
-          <p><a href= "/blog">{{ blog.title }}</a></p>
+          <p><a href='/blog'>
+            <!--<form method="POST" action='/blog'>-->
+            {{ blog.title }}</p></a>
           <p>{{blog.body}}</p>
-          <form method="POST" action="/blog">
-            <input type="text" name="title" value="{{ blog.id }}"/>
+            <input type="hidden" name="title" value="{{ blog.id }}"/>
+            <p></p>
           </form>
       </li>
     {% endfor %}
@@ -17,3 +19,4 @@
 {% endif %}
 
 {% endblock %}
+<!--<a href= "/blog?id="></a>
