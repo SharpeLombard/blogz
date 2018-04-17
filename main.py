@@ -27,8 +27,8 @@ def get_bloglist():
     return Blog.query.filter_by(deleted=False).all()
 
 #/add is where we go after hitting Add New
-@app.route("/add", methods=['GET'])
-def new_blog_text():
+#@app.route("/add", methods=['GET','POST'])
+#def new_blog_text():
     #encoded_error = request.args.get("error1")
     #next_error = request.args.get("error2")
     return render_template('Add-New_Blog.html')
@@ -36,36 +36,37 @@ def new_blog_text():
 #/Newpost is where we go after hitting 'Add It'
 @app.route("/newpost", methods=['POST','GET'])
 def add_blog():
-   # if request.method == 'POST':
-    new_blog = request.form['new_blog']
-    blog_text = request.form['blog_text']
-    title_error = ''
-    body_error = ''    
+    if request.method == 'POST':
+        new_blog = request.form['new_blog']
+        blog_text = request.form['blog_text']
+        title_error = ''
+        body_error = ''    
 
     #if len(new_blog_text)==0 and len(new_blog_title)==0:
      #   title-error = "Please enter blog title."
       #  body-error = "Please enter blog text." 
 
-    if not blog_text:
-        body_error = "Please enter blog text."
-        blog_text = blog_text
-        new_blog = new_blog
+        if not blog_text:
+            body_error = "Please enter blog text."
+            #blog_text = blog_text
+            #new_blog = new_blog
 
-    if not new_blog:
-        title_error = "Please enter blog title."
-        blog_text = blog_text
-        new_blog = new_blog
+        if not new_blog:
+            title_error = "Please enter blog title."
+            blog_text = blog_text
+            new_blog = new_blog
 
-    if not title_error and not body_error:
-        blog = Blog(new_blog,blog_text)
-        db.session.add(blog)
-        db.session.commit()
-        return redirect('/blog?id={}'.format(blog.id))
-    else:
-        #new_blog = request.form['new_blog']
-        #blog_text = request.form['blog_text']
-        return render_template('Add-New_Blog.html',blog_text=blog_text, new_blog=new_blog,
-        body_error=body_error,title_error=title_error)
+        if not title_error and not body_error:
+            blog = Blog(new_blog,blog_text)
+            db.session.add(blog)
+            db.session.commit()
+            #return render_template('new-post.html', blog=blog)
+            return redirect('/blog?id={}'.format(blog.id))
+        else:
+            #new_blog = request.form['new_blog']
+            #blog_text = request.form['blog_text']
+            return render_template('Add-New_Blog.html',blog_text=blog_text, new_blog=new_blog,
+            body_error=body_error,title_error=title_error)
     return render_template('Add-New_Blog.html', title='New Post')
 
 @app.route("/blog")
