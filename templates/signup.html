@@ -1,0 +1,48 @@
+<!--User enters new, valid username, a valid password, and verifies password correctly and is redirected to the 
+    '/newpost' page with their username being stored in a session.
+    User leaves any of the username, password, or verify fields blank and gets an error message that one or more fields are invalid.
+    User enters a username that already exists and gets an error message that username already exists.
+    User enters different strings into the password and verify fields and gets an error message that the passwords do not match.
+    User enters a password or username less than 3 characters long and gets either an invalid username or an invalid password message.
+
+    flash message??-->
+
+    {% extends "base.html" %}
+
+    {% block content %}
+    
+     <style>
+     .error{
+         color:red;
+     }
+     </style>
+     <body>
+         <h1>Signup</h1>
+         <form method='POST'>
+             <table>
+                 <tbody>
+                     <tr>
+                         <td><label for="username">username</label></td>
+                         <td><input name="username" type="text" value='{{username}}'/>
+                         <span class="error">{{username_error}}</span></td>
+                     </tr>
+                     <tr>
+                         <td><label for="password">password</label></td>
+                         <td><input name="password" type="password" value='{{password}}'/>
+                         <span class="error">{{password_error}}</span></td>
+                     </tr>
+                     <tr>
+                         <td><label for="verify_password">verify password</label></td>
+                         <td><input name="verify_password" type="password" value='{{verify_password}}'/>
+                         <span class="error">{{verify_password_error}}</span></td>
+                     </tr>
+                    </tbody>
+                </table>
+                <h1><input type="submit" value="Submit"></input></h1>
+            </form>
+        </body>
+    </html>
+            
+    {% endblock %}
+
+    <!-- what about errors.username_error, etc

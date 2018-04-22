@@ -1,7 +1,8 @@
 {% extends "base.html" %}
 {% block content %}
 
-<h1>My Awesome Blog Posts</h1>
+<h1>Blog Posts</h1>
+
 {% if blogs|length == 0 %}
   <h3> No blog posts yet.</h3>
   {%else%}
@@ -13,7 +14,12 @@
           <p>{{blog.body}}</p>
           <hr>
             <input type="hidden" name="title" value="{{ blog.id }}"/>
-        
+<p class="post-author">
+  written by
+  <a href="/blog?user=user">user</a>
+</p>   
+</body>
+</html>    
         
     {% endfor %}
 

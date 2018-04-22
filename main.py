@@ -111,56 +111,63 @@ def login():
             session['username'] = username
             return redirect('/newpost')
         if user and user.password != password:
-            flash()
-            return redirect('/newpost')
+            flash('Incorrect password.')
+            return redirect('/login')
+        if not user:
+            flash('Username does not exist.')
+            return redirect('/login')
     return render_template('login.html')
 
 @app.route('/logout')
 
 @app.before_request
 
-@app.route('/signup', methods=['POST'])
-def validate_inputs():
+@app.route('/signup', methods=['POST','GET'])
+def signup():
+    if request method == 'POST':
+        username = request.form['username']
+        password = request.form['password']
+        verify_password = request.form['verify_password']
+        user = User.query.filter_by(username=username).first()
+        username_error = ''
+        password_error = ''
+        verify_password_error = ''
+        if len(username) < 3:
+            username_error = 'Username must be more than 2 characters'
+            username = ''
+            password = ''
+            verify_password = ''
+        #elif ' ' in username:
+         #   username_error = 'Username cannot contain spaces'
+          #  username = ''
+           # password = ''
+            #verify_password = ''
+        else:
+            username = username
 
-    username = request.form['username']
-    password = request.form['password']
-    verify_password = request.form['verify_password']
-    username_error = ''
-    password_error = ''
-    verify_password_error = ''
+        if user:
+            username_error = 'Username already exists'
 
-    if len(username) < 3 or len(username) > 20:
-        username_error = 'Username must be 3-20 characters'
-        username = ''
-        password = ''
-        verify_password = ''
-    elif ' ' in username:
-        username_error = 'Username cannot contain spaces'
-        username = ''
-        password = ''
-        verify_password = ''
-    else:
-        username = username
+        if len(password) < 3:
+            password_error = 'Password must be more than 2 characters'
+            password = ''
+            verify_password = ''
+        else:
+            password = password
 
-    if len(password) < 3 or len(password) > 20:
-        password_error = 'Password must be 3-20 characters'
-        password = ''
-        verify_password = ''
-    else:
-        password = password
+        if password != verify_password:
+            verify_password_error = 'Passwords do not match!'
+            verify_password = ''
+            password = ''
 
-    if password != verify_password:
-        verify_password_error = 'Passwords do not match!'
-        verify_password = ''
-        password = ''
-
-    if not username_error and not password_error and not verify_password_error:
-        return redirect("/newpost")
-    else:
-        return render_template('signup.html',username=username, password=password, 
-        username_error=username_error, password_error=password_error, verify_password=verify_password, 
-        verify_password_error=verify_password_error, email=email,
-        email_error=email_error)
+        if not username_error and not password_error and not verify_password_error:
+            session['username'] = username
+            return redirect("/newpost")
+        else:
+            return render_template('signup.html',username=username, password=password, 
+            username_error=username_error, password_error=password_error, verify_password=verify_password, 
+            verify_password_error=verify_password_error, email=email,
+            email_error=email_error)
 
 if __name__ == "__main__":
     app.run()
