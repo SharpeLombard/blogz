@@ -1,39 +1,73 @@
-<!DOCTYPE html>
-
+<!doctype html>
 <html>
     <head>
-        <title>Blogz</title>
-        <!--<link rel="stylesheet" href="/css/normalize.css">
-        <link rel="stylesheet" href="/css/styles.css">-->
-    </head>
-    <body>
-        <nav>
-            <ul id="user-account">
-                <li><a href="/login">login</a></li>
-                <li><a href="/logout">logout</a></li>
-            </ul>
-            <ul>
-                <li><a href="/">home</a></li>
-                <li><a href="/blog">all posts</a></li>
-                <li><a href="/blog/newpost">new post</a></li>
-            </ul>
-        </nav>
-
-<!--        <title>{{title}}</title>
+        <title>{{title}}</title>
         <style>
-            h1{text-align: center;}
+            *{
+                font-family: 'Times New Roman', Times, serif;
+            }
             .error {
                 color: red;
             }
-        </style>
+            
+            </style>
+           <!-- table, tr, td {
+                border: 1px solid black;
+            }
+            .link_button { 
+                background: none;
+                border: none;
+                text-decoration: underline;
+                cursor: pointer; 
+                font-size: 1.065em;
+            }
+            header, footer {
+                text-align: center;
+                font-size: 1.25em;
+                background-color: #7c145d;
+                border: 1px solid rgb(65, 233, 31);
+            }
+            body {
+                background-color: rgb(202, 39, 167);
+            }
+            main {
+                background-color: #f342f3;
+                font-size: 1.125em;
+                border: 1px solid rgb(0, 0, 0);
+            }
+            thead {
+                font-size: 1.125em;
+                text-align: center;
+            }-->
+    
     </head>
     <body>
-        <nav>
-            <a href="/blog">Go To Blog Main Page</a>|
-            <a href="/newpost           
-            ">Add A New Blog Entry</a>
-        </nav>-->
-        {% block content %}
-        {% endblock %}
+        <header>
+            <div>
+                <table>
+                    <tr>
+                        <td> <a href= '/UserPage'> Home </a> </td>
+                        <!--<td> <a href= '/UserPage'> Users </a> </td>-->
+                        <td> <a href= '/blog'> All Blogs </a> </td>
+                        <td> <a href= '/newpost'> New Post </a> </td>
+                        <td> <a href= '/login'> Login </a> </td>
+                        <td> <a href= '/logout'> Logout </a> </td>
+                        <!--<td> <a href= '/signup'> Signup </a> </td>-->
+                    </tr>
+                </table>
+            </div>
+        </header>
+        <br>
+        <main>
+
+            {% block content %}
+
+            {% endblock %}
+
+        </main>
+        <br>
+    
+        </footer>
     </body>
 </html>
+
