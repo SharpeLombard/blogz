@@ -179,36 +179,6 @@ def signup():
     return render_template("SugnUp.html", title= "Signup To Be A Blogger")
         
 
-        #username = request.form['username']
-        #password = request.form['password']
-        #verify = request.form['verify']
-
-        #if username == "":
-         #   error["name_error"] = "Username cannot be blank"
-        #if password == "":
-        #    error["pass_error"] = "Password cannot be blank"
-        #elif len(password) < 2:
-         #   error["pass_error"] = "Password must be more than two characters long"
-        #else:
-         #   if password != verify:
-          #      error["verify_error"] = "Pasword and Verify must match"
-
-       
-        
-
-       # if error["name_error"] == "" and error["pass_error"] == "" and error["verify_error"] == "":
-        #    new_user = User(username, password)
-         #   db.session.add(new_user)
-          #  db.session.commit()
-           # session['user'] = new_user.username
-            #return redirect("/blog")
-
-    #return render_template("signup.html", title= "Signup To Be A Blogger",
-     #   name_error= error["name_error"], pass_error= error["pass_error"],
-      #  verify_error= error["verify_error"])
-
-  
-
 @app.route("/login", methods=['POST', 'GET'])
 def login():
     error = {"name_error": "", "pass_error": ""}
@@ -240,13 +210,6 @@ def login():
 
 @app.route("/logout", methods= ['POST', 'GET'])
 def logout():
-        #current_user = session['user']
-        #if request.method == 'POST':
-        #yes = request.form['logout']
-        #print(yes)
-        #session['user'] = ""
-        #return redirect("/blog")
-        #return render_template("logout.html", title= "Logout", name= current_user)
     if 'user' in session:
         del session['user']
     return redirect('/blog')
